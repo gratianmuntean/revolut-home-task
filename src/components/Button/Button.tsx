@@ -5,15 +5,25 @@ import styles from "./styles.module.css";
 type ButtonProps = {
   onClick: any;
   children: React.ReactNode;
+  className?: string;
+  type?: any;
 };
 
 const Button = (props: ButtonProps) => {
-  const { onClick, children } = props;
+  const { onClick, children, className, type } = props;
   return (
-    <button type="button" onClick={onClick} className={styles.button}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`${styles.button} ${className}`}
+    >
       {children}
     </button>
   );
+};
+
+Button.defaultProps = {
+  type: "button",
 };
 
 export default Button;

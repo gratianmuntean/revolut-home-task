@@ -1,0 +1,13 @@
+.select {
+  border: none;
+  height: 36px;
+  background-color: white;
+  color: var(--primary-color);
+  border-radius: 40px;
+  min-width: 200px;
+  outline: none;
+  padding: 0 20px;
+  appearance: none;
+  cursor: pointer;
+  font-weight: bold;
+}

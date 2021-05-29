@@ -3,15 +3,20 @@ import axios from "axios";
 
 import { BASE_URL, APP_ID } from "config";
 
+import Layout from "components/Layout";
+
+import { AppContext } from "contexts/AppContext";
+
+import { accountsData } from "accounts";
+
 import "./App.css";
 import "./scss/app.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Layout from "components/Layout";
-
 const App = () => {
   const [rates, setRates] = useState([]);
   const [base, setBase] = useState("");
+  const [accounts, setAccounts] = useState(accountsData);
 
   useEffect(() => {
     // get rates
@@ -19,9 +24,8 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    console.log("rates", rates);
-    console.log("base", base);
-  }, [rates, base]);
+    console.log("setAccounts DIN AP", accounts);
+  }, [accounts]);
 
   const getRates = async () => {
     const response = await axios.get(`${BASE_URL}?app_id=${APP_ID}`);
@@ -38,7 +42,14 @@ const App = () => {
 
   return (
     <div className="App">
-      <Layout />
+      <AppContext.Provider value={{ rates, base }}>
+        <Layout
+          accounts={accounts}
+          setAccounts={(value: any) => {
+            setAccounts([...value]);
+          }}
+        />
+      </AppContext.Provider>
     </div>
   );
 };
