@@ -1,0 +1,16 @@
+.button {
+  border: none;
+  border-radius: 40px;
+
+  font-family: var(--primary-font-family);
+  background-color: var(--primary-color);
+  color: white;
+
+  height: 36px;
+  padding: 0 15px;
+  font-size: 18px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
