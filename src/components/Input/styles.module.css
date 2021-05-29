@@ -1,6 +1,8 @@
 .inputContainer {
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .input {
@@ -39,4 +41,13 @@
   font-weight: bold;
   font-size: 15px;
   opacity: 0.8;
+}
+
+.label img {
+  height: 30px;
+  width: 30px;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
 }

@@ -9,10 +9,19 @@ type SelectProps = {
   className?: string;
   onChangeHandler?: any;
   which?: string;
+  defaultValue?: any;
 };
 
 const Select = (props: SelectProps) => {
-  const { options, register, name, className, onChangeHandler, which } = props;
+  const {
+    options,
+    register,
+    name,
+    className,
+    onChangeHandler,
+    which,
+    defaultValue,
+  } = props;
   return (
     <select
       {...register(name)}
@@ -21,6 +30,7 @@ const Select = (props: SelectProps) => {
         const value = event.target.value;
         onChangeHandler(value, which);
       }}
+      defaultValue={defaultValue}
     >
       {options?.map((acc: any, index: number) => {
         return (

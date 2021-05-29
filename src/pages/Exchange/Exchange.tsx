@@ -8,7 +8,7 @@ import Select from "components/Select";
 
 import { AppContext } from "contexts/AppContext";
 
-import { convertAmount, buildAccounts } from "helpers";
+import { convertAmount, buildAccounts, getLeftValues } from "helpers";
 
 import styles from "./styles.module.css";
 
@@ -26,31 +26,48 @@ const Exchange = (props: ExchangeProps) => {
   const { accounts, setAccounts } = props;
 
   const [operation, setOperation] = useState(SELL);
-  const [operationChecked, setOperationChecked] = useState(false);
+  const [operationChecked, setOperationChecked] = useState(true);
+  const [whichInput, setWhichInput] = useState(FIRST);
 
   const [firstCurrency, setFirstCurrency] = useState(accounts[0]);
-  const [secondCurrency, setSecondCurrency] = useState(accounts[1]);
+  const [secondCurrency, setSecondCurrency] = useState(accounts[2]);
 
-  const { rates, base } = useContext(AppContext);
+  const { rates } = useContext(AppContext);
 
   const { register, handleSubmit, setValue } = useForm();
 
   const onSubmit = (values: any) => {
     const sellAmount = Number(values[firstCurrency?.currency]);
-    const sellResult = firstCurrency?.amount - sellAmount;
 
     const newAccounts = buildAccounts(
       accounts,
       firstCurrency,
       secondCurrency,
       sellAmount,
-      rates
+      rates,
+      operation
     );
 
     setAccounts(newAccounts);
   };
 
-  const onChangeHandler = (value: number, currency: string) => {};
+  const onChangeHandler = (value: number, which: string) => {
+    const cloneAccounts = [...accounts];
+    const sellAmount = value;
+    const newAccounts = getLeftValues(
+      cloneAccounts,
+      firstCurrency,
+      secondCurrency,
+      sellAmount,
+      rates,
+      operation,
+      which
+    );
+    setFirstCurrency({ ...newAccounts.cloneFromAccount });
+    setSecondCurrency({ ...newAccounts.cloneToAccount });
+
+    setWhichInput(which);
+  };
 
   const onChangeCurrency = (value: string, which: string) => {
     const account = accounts.find((el: any) => el?.currency === value);
@@ -59,6 +76,12 @@ const Exchange = (props: ExchangeProps) => {
     } else {
       setSecondCurrency(account);
     }
+    clearValues();
+  };
+
+  const clearValues = () => {
+    setValue(secondCurrency.currency, 0);
+    setValue(firstCurrency.currency, 0);
   };
 
   useEffect(() => {
@@ -77,25 +100,37 @@ const Exchange = (props: ExchangeProps) => {
               />
               <h1>{`${operation} - ${accounts[0].currency}`}</h1>
             </div>
+            {/* market order value */}
+            <div className={`col-12 ${styles.marketOrder}`}>
+              Market order - 1 {firstCurrency?.currency} ={" "}
+              {convertAmount(
+                1,
+                firstCurrency?.currency,
+                secondCurrency?.currency,
+                rates
+              )}
+            </div>
             {/* select currency row */}
             <div className={`col-6 ${styles.selectBox}`}>
-              <span>Select currency:</span>
+              <span>From currency:</span>
               <Select
                 options={accounts}
                 which={FIRST}
                 name="firstCurrency"
                 register={register}
                 onChangeHandler={onChangeCurrency}
+                defaultValue={firstCurrency?.currency}
               />
             </div>
             <div className={`col-6 ${styles.selectBox}`}>
-              <span>Select currency:</span>
+              <span>To currency:</span>
               <Select
                 options={accounts}
                 which={SECOND}
                 name="secondCurrency"
                 register={register}
                 onChangeHandler={onChangeCurrency}
+                defaultValue={secondCurrency?.currency}
               />
             </div>
             {/* number inputs */}
@@ -106,6 +141,8 @@ const Exchange = (props: ExchangeProps) => {
                 symbol={firstCurrency.symbol}
                 name={firstCurrency.currency}
                 register={register}
+                flag={firstCurrency.flag}
+                which={FIRST}
                 onChangeHandler={onChangeHandler}
               />
             </div>
@@ -115,18 +152,14 @@ const Exchange = (props: ExchangeProps) => {
                 balance={secondCurrency.amount}
                 symbol={secondCurrency.symbol}
                 name={secondCurrency.currency}
+                flag={secondCurrency.flag}
                 register={register}
+                which={SECOND}
                 onChangeHandler={onChangeHandler}
               />
             </div>
             <div className={`col-12 ${styles.buttonContainer}`}>
-              <Button
-                type="submit"
-                className={styles.buttonExchange}
-                onClick={() => {
-                  console.log("submit");
-                }}
-              >
+              <Button type="submit" className={styles.buttonExchange}>
                 Exchange now
               </Button>
             </div>

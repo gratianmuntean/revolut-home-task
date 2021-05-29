@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./styles.module.css";
 
 type ButtonProps = {
-  onClick: any;
+  onClick?: any;
   children: React.ReactNode;
   className?: string;
   type?: any;

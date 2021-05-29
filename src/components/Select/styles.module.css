@@ -3,6 +3,7 @@
   height: 36px;
   background-color: white;
   color: var(--primary-color);
+  border: 2px solid var(--primary-color);
   border-radius: 40px;
   min-width: 200px;
   outline: none;

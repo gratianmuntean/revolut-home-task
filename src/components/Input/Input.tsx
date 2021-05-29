@@ -2,6 +2,8 @@ import React from "react";
 
 import styles from "./styles.module.css";
 
+const INPUT_REGEX = new RegExp("/^-?d*[.,]?d{0,2}$/");
+
 type InputProps = {
   currency?: string;
   balance?: number;
@@ -9,14 +11,28 @@ type InputProps = {
   name?: string;
   register?: any;
   onChangeHandler?: any;
+  flag?: any;
+  which?: string;
 };
 
 const Input = (props: InputProps) => {
-  const { currency, balance, symbol, name, register, onChangeHandler } = props;
+  const {
+    currency,
+    balance,
+    symbol,
+    name,
+    register,
+    onChangeHandler,
+    flag,
+    which,
+  } = props;
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={name} className={styles.label}>
-        <div className={styles.currency}>{`${currency}`}</div>
+        <div className={styles.currency}>
+          <img src={flag} alt={currency} />
+          <span>{`${currency}`}</span>
+        </div>
         <div className={styles.balance}>{`Balance: ${balance} ${symbol}`}</div>
       </label>
       <input
@@ -27,7 +43,7 @@ const Input = (props: InputProps) => {
         {...register(name)}
         onChange={(event) => {
           const value = event.target.value;
-          onChangeHandler(value, currency);
+          onChangeHandler(value, which);
         }}
         placeholder={currency}
       />

@@ -13,6 +13,8 @@ import "./App.css";
 import "./scss/app.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+const TIMER_GAP = 60000;
+
 const App = () => {
   const [rates, setRates] = useState([]);
   const [base, setBase] = useState("");
@@ -21,6 +23,9 @@ const App = () => {
   useEffect(() => {
     // get rates
     getRates();
+    setInterval(() => {
+      getRates();
+    }, TIMER_GAP);
   }, []);
 
   useEffect(() => {
