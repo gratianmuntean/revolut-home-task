@@ -138,7 +138,7 @@ const Exchange = (props: ExchangeProps) => {
               )}
             </div>
             {/* select currency row */}
-            <div className={`col-12 col-lg-6 ${styles.selectBox}`}>
+            <div className={`col-12 col-lg-8 col-xl-6 ${styles.selectBox}`}>
               <span>{constants.FROM_CURRENCY}</span>
               <Select
                 options={accounts}
@@ -149,7 +149,7 @@ const Exchange = (props: ExchangeProps) => {
                 defaultValue={firstCurrency?.currency}
               />
             </div>
-            <div className={`col-12 col-lg-6 ${styles.selectBox}`}>
+            <div className={`col-12 col-lg-8 col-xl-6 ${styles.selectBox}`}>
               <span>{constants.TO_CURRENCY}</span>
               <Select
                 options={accounts}
@@ -161,7 +161,7 @@ const Exchange = (props: ExchangeProps) => {
               />
             </div>
             {/* number inputs */}
-            <div className="col-12 col-lg-6">
+            <div className="col-12 col-lg-8 col-xl-6">
               <Input
                 currency={firstCurrency.currency}
                 balance={firstCurrency.amount}
@@ -174,7 +174,7 @@ const Exchange = (props: ExchangeProps) => {
                 handleDisableSubmit={handleDisableSubmit}
               />
             </div>
-            <div className="col-12 col-lg-6">
+            <div className="col-12 col-lg-8 col-xl-6">
               <Input
                 currency={secondCurrency.currency}
                 balance={secondCurrency.amount}

@@ -1,4 +1,5 @@
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import Button from "components/Button";
 
@@ -10,6 +11,7 @@ import constants from "config/constants";
 
 type SidebarProps = {
   accounts: any;
+  mobileOpen: boolean;
 };
 
 const LogoRow = () => (
@@ -62,13 +64,33 @@ const AvailableAccounts = (props: any) => {
 };
 
 const Sidebar = (props: SidebarProps) => {
-  const { accounts } = props;
+  const mobileAnimation = {
+    initial: { opacity: 0, left: "100%" },
+    animate: { opacity: 1, left: 0 },
+    exit: { opacity: 0, left: "100%" },
+    transition: { duration: 0.5 },
+  };
+
+  const { accounts, mobileOpen } = props;
   return (
-    <div className={styles.sidebar}>
-      <LogoRow />
-      <div className={styles.horizontalSeparator} />
-      <AvailableAccounts accounts={accounts} />
-    </div>
+    <>
+      <div className={styles.sidebar}>
+        <LogoRow />
+        <div className={styles.horizontalSeparator} />
+        <AvailableAccounts accounts={accounts} />
+      </div>
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            {...mobileAnimation}
+            key="mobileMenu"
+            className={styles.sidebarMobile}
+          >
+            <AvailableAccounts accounts={accounts} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

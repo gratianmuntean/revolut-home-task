@@ -1,7 +1,7 @@
 const constants = {
   TIMER_GAP: 60000,
   DIGIT_NUMBER: 2,
-  REVOLUT: 'revolut',
+  REVOLUT: 'Revolut',
   AVAILABLE_ACCOUNTS: 'Available Accounts',
   NEW: '+ New',
   EXCHANGE_PAGE: 'Exchange Page',

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Sidebar from "components/Sidebar";
 import Header from "components/Header";
@@ -13,13 +13,14 @@ type LayoutProps = {
 
 const Layout = (props: LayoutProps) => {
   const { accounts, setAccounts } = props;
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <section className={styles.container}>
-      <Sidebar accounts={accounts} />
+      <Sidebar accounts={accounts} mobileOpen={mobileOpen} />
       <div className={styles.verticalSeparator} />
       <main className={styles.main}>
-        <Header />
+        <Header setMobileOpen={() => setMobileOpen(!mobileOpen)} />
         <div className={styles.horizontalSeparator} />
         <Exchange accounts={accounts} setAccounts={setAccounts} />
       </main>
