@@ -7,12 +7,14 @@ type ButtonProps = {
   children: React.ReactNode;
   className?: string;
   type?: any;
+  disabled?: boolean;
 };
 
 const Button = (props: ButtonProps) => {
-  const { onClick, children, className, type } = props;
+  const { onClick, children, className, type, disabled } = props;
   return (
     <button
+      disabled={disabled}
       type={type}
       onClick={onClick}
       className={`${styles.button} ${className}`}
@@ -24,6 +26,7 @@ const Button = (props: ButtonProps) => {
 
 Button.defaultProps = {
   type: "button",
+  disabled: false,
 };
 
 export default Button;

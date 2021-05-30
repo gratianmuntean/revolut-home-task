@@ -1,25 +1,27 @@
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
-
-const SELL = "Sell";
-const BUY = "Buy";
-
-const FIRST = "first";
-const SECOND = "second";
+import constants from 'config/constants';
 
 export const convertAmount = (value: any, fromCurrency: string, toCurrency: string, rates: any) => {
-  console.log('value,', value)
   const numberValue = Number(value);
   const fromToBase = numberValue / rates[fromCurrency];
   const baseTo = fromToBase * rates[toCurrency];
-  console.log('baseto', baseTo);
-  return Number(baseTo.toFixed(2));
+  return Number(baseTo.toFixed(constants.DIGIT_NUMBER));
 }
 
 const getElementByKey = (list: any, key: string) => {
   return list.find((el: any) => el.currency === key)
 }
 
-export const buildAccounts = (accounts: any, from: any, to: any, amount: number, rates: any, operation: string) => {
+const sellFormula = (fromAccount: any, toAccount: any, amount: number, convertedAmount: number) => {
+  fromAccount.amount -= Number(amount);
+  toAccount.amount += Number(convertedAmount);
+}
+
+const buyFormula = (fromAccount: any, toAccount: any, amount: number, convertedAmount: number) => {
+  fromAccount.amount += Number(amount);
+  toAccount.amount -= Number(convertedAmount);
+}
+
+export const buildAccounts = (accounts: any, from: any, to: any, amount: number, rates: any, operation: string, whichInput: string) => {
   const fromKey = from?.currency;
   const toKey = to?.currency;
 
@@ -27,50 +29,54 @@ export const buildAccounts = (accounts: any, from: any, to: any, amount: number,
   const toAccount = accounts.find((el: any) => el.currency === toKey);
   const convertedAmount = convertAmount(amount, fromAccount?.currency, toAccount?.currency, rates);
 
-  if (operation === SELL) {
-    fromAccount.amount -= Number(amount);
-    toAccount.amount += Number(convertedAmount);
+  if (operation === constants.SELL) {
+    if (whichInput === constants.FIRST) {
+      sellFormula(fromAccount, toAccount, amount, convertedAmount);
+    } else {
+      buyFormula(fromAccount, toAccount, amount, convertedAmount);
+    }
   }
-  if (operation === BUY) {
-    fromAccount.amount += Number(amount);
-    toAccount.amount -= Number(convertedAmount);
+
+  if (operation === constants.BUY) {
+    if (whichInput === constants.FIRST) {
+      buyFormula(fromAccount, toAccount, amount, convertedAmount);
+    } else {
+      sellFormula(fromAccount, toAccount, amount, convertedAmount);
+    }
   }
 
   return [...accounts];
 }
 
-export const getLeftValues = (accounts: any, from: any, to: any, amount: number, rates: any, operation: string, which: string) => {
+export const getLeftValues = (accounts: any, from: any, to: any, amount: number, rates: any, operation: string, whichInput: string) => {
   const fromKey = from?.currency;
   const toKey = to?.currency;
 
   const fromAccount = getElementByKey(accounts, fromKey);
   const toAccount = getElementByKey(accounts, toKey);
 
-  let convertedAmount;
+  const convertedAmount = convertAmount(amount, fromAccount?.currency, toAccount?.currency, rates);
 
-  if (which === FIRST) {
-    convertedAmount = convertAmount(amount, fromAccount?.currency, toAccount?.currency, rates);
-  } else {
-    convertedAmount = convertAmount(amount, toAccount?.currency, fromAccount?.currency, rates);
-  }
-
-  console.log('cnovert', which, convertedAmount)
   const cloneFromAccount = { ...fromAccount };
   const cloneToAccount = { ...toAccount };
 
-  const properAmount = which === FIRST ? amount : convertedAmount;
-  console.log('proper', properAmount);
-  if (operation === SELL) {
-    cloneFromAccount.amount -= Number(properAmount);
-    cloneToAccount.amount += Number(convertedAmount);
-  }
-  if (operation === BUY) {
-    console.log('  cloneFromAccount.amount', cloneFromAccount.amount, amount)
-    cloneFromAccount.amount += Number(properAmount);
-    cloneToAccount.amount -= Number(convertedAmount);
+
+  if (operation === constants.SELL) {
+    if (whichInput === constants.FIRST) {
+      sellFormula(cloneFromAccount, cloneToAccount, amount, convertedAmount);
+    } else {
+      buyFormula(cloneFromAccount, cloneToAccount, amount, convertedAmount);
+    }
   }
 
-  console.log(' { cloneFromAccount, cloneToAccount };', { cloneFromAccount, cloneToAccount })
+  if (operation === constants.BUY) {
+    if (whichInput === constants.FIRST) {
+      buyFormula(cloneFromAccount, cloneToAccount, amount, convertedAmount);
+    } else {
+      sellFormula(cloneFromAccount, cloneToAccount, amount, convertedAmount);
+    }
+  }
+
   return { cloneFromAccount, cloneToAccount };
 
 }

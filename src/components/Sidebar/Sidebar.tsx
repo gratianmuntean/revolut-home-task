@@ -6,6 +6,8 @@ import revolutIcon from "assets/icons/revolutIcon.png";
 
 import styles from "./styles.module.css";
 
+import constants from "config/constants";
+
 type SidebarProps = {
   accounts: any;
 };
@@ -13,7 +15,7 @@ type SidebarProps = {
 const LogoRow = () => (
   <div className={styles.logoRow}>
     <img src={revolutIcon} alt="sidebarIcon" />
-    <div className={styles.logoText}>Revolut</div>
+    <div className={styles.logoText}>{constants.REVOLUT}</div>
   </div>
 );
 
@@ -23,13 +25,13 @@ const AvailableAccounts = (props: any) => {
   return (
     <div className={styles.accounts}>
       <div className={styles.accountsTitle}>
-        <div>Available Accounts</div>
+        <div>{constants.AVAILABLE_ACCOUNTS}</div>
         <Button
           onClick={() => {
             console.warn("To be implemented");
           }}
         >
-          + New
+          {constants.NEW}
         </Button>
       </div>
       <article className={styles.flagsList}>
@@ -48,7 +50,9 @@ const AvailableAccounts = (props: any) => {
                   </span>
                 </div>
               </div>
-              <div>{`${acc?.amount.toFixed(2)} ${acc?.symbol}`}</div>
+              <div>{`${acc?.amount.toFixed(constants.DIGIT_NUMBER)} ${
+                acc?.symbol
+              }`}</div>
             </div>
           );
         })}

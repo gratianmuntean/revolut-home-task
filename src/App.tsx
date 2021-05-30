@@ -9,15 +9,15 @@ import { AppContext } from "contexts/AppContext";
 
 import { accountsData } from "accounts";
 
+import constants from "config/constants";
+
 import "./App.css";
 import "./scss/app.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const TIMER_GAP = 60000;
-
 const App = () => {
+  console.log("constants", constants);
   const [rates, setRates] = useState([]);
-  const [base, setBase] = useState("");
   const [accounts, setAccounts] = useState(accountsData);
 
   useEffect(() => {
@@ -25,21 +25,16 @@ const App = () => {
     getRates();
     setInterval(() => {
       getRates();
-    }, TIMER_GAP);
+    }, constants.TIMER_GAP);
   }, []);
-
-  useEffect(() => {
-    console.log("setAccounts DIN AP", accounts);
-  }, [accounts]);
 
   const getRates = async () => {
     const response = await axios.get(`${BASE_URL}?app_id=${APP_ID}`);
     try {
       const {
-        data: { rates, base },
+        data: { rates },
       } = response;
       setRates(rates);
-      setBase(base);
     } catch (e) {
       console.error("error", e);
     }
@@ -47,7 +42,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <AppContext.Provider value={{ rates, base }}>
+      <AppContext.Provider value={{ rates }}>
         <Layout
           accounts={accounts}
           setAccounts={(value: any) => {

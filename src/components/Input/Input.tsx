@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
+
+import constants from "config/constants";
 
 import styles from "./styles.module.css";
-
-const INPUT_REGEX = new RegExp("/^-?d*[.,]?d{0,2}$/");
 
 type InputProps = {
   currency?: string;
@@ -13,6 +13,7 @@ type InputProps = {
   onChangeHandler?: any;
   flag?: any;
   which?: string;
+  handleDisableSubmit?: any;
 };
 
 const Input = (props: InputProps) => {
@@ -25,29 +26,54 @@ const Input = (props: InputProps) => {
     onChangeHandler,
     flag,
     which,
+    handleDisableSubmit,
   } = props;
+  const [negativeBalance, setNegativeBalance] = useState(false);
+
+  useEffect(() => {
+    setNegativeBalance(balance! < 0);
+  }, [balance]);
+
+  useEffect(() => {
+    handleDisableSubmit(negativeBalance);
+  }, [negativeBalance, handleDisableSubmit]);
+
+  const balanceValue = useMemo(() => {
+    return `${constants.BALANCE} ${balance?.toFixed(
+      constants.DIGIT_NUMBER
+    )} ${symbol}`;
+  }, [balance, symbol]);
+
   return (
-    <div className={styles.inputContainer}>
-      <label htmlFor={name} className={styles.label}>
-        <div className={styles.currency}>
-          <img src={flag} alt={currency} />
-          <span>{`${currency}`}</span>
+    <>
+      <div className={styles.inputContainer}>
+        <label htmlFor={name} className={styles.label}>
+          <div className={styles.currency}>
+            <img src={flag} alt={currency} />
+            <span>{currency}</span>
+          </div>
+          <div className={styles.balance}>{balanceValue}</div>
+        </label>
+        <input
+          type="number"
+          id={name}
+          name={name}
+          className={styles.input}
+          {...register(name)}
+          onChange={(event) => {
+            const value = event.target.value;
+            onChangeHandler(value, which);
+          }}
+          placeholder={currency}
+          step="0.1"
+        />
+      </div>
+      {negativeBalance && (
+        <div className={styles.errorMessage}>
+          <span>exceeds balance</span>
         </div>
-        <div className={styles.balance}>{`Balance: ${balance} ${symbol}`}</div>
-      </label>
-      <input
-        type="number"
-        id={name}
-        name={name}
-        className={styles.input}
-        {...register(name)}
-        onChange={(event) => {
-          const value = event.target.value;
-          onChangeHandler(value, which);
-        }}
-        placeholder={currency}
-      />
-    </div>
+      )}
+    </>
   );
 };
 

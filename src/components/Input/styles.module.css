@@ -16,6 +16,14 @@
 
   border-radius: 40px;
   padding: 0 20px;
+  -webkit-appearance: none;
+
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .input::placeholder {
@@ -50,4 +58,12 @@
   margin-right: 8px;
 
   border-radius: 50%;
+}
+
+.errorMessage {
+  margin-top: 5px;
+  display: flex;
+  justify-content: flex-end;
+  font-weight: bold;
+  color: red;
 }
