@@ -127,16 +127,6 @@ const Exchange = (props: ExchangeProps) => {
               />
               <h1>{`${operation} - ${firstCurrency.currency}`}</h1>
             </div>
-            {/* market order value */}
-            <div className={`col-12 ${styles.marketOrder}`}>
-              {constants.MARKET_ORDER} {firstCurrency?.currency} ={" "}
-              {convertAmount(
-                1,
-                firstCurrency?.currency,
-                secondCurrency?.currency,
-                rates
-              )}
-            </div>
             {/* select currency row */}
             <div className={`col-12 col-lg-8 col-xl-6 ${styles.selectBox}`}>
               <span>{constants.FROM_CURRENCY}</span>
@@ -159,6 +149,16 @@ const Exchange = (props: ExchangeProps) => {
                 onChangeHandler={onChangeCurrency}
                 defaultValue={secondCurrency?.currency}
               />
+            </div>
+            {/* market order value */}
+            <div className={`col-12 ${styles.marketOrder}`}>
+              {constants.MARKET_ORDER} {firstCurrency?.currency} ={" "}
+              {convertAmount(
+                1,
+                firstCurrency?.currency,
+                secondCurrency?.currency,
+                rates
+              )}
             </div>
             {/* number inputs */}
             <div className="col-12 col-lg-8 col-xl-6">

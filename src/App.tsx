@@ -24,6 +24,7 @@ const App = () => {
     getRates();
     setInterval(() => {
       getRates();
+      // 10 seconds timer gap
     }, constants.TIMER_GAP);
   }, []);
 

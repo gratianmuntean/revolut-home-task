@@ -1,5 +1,5 @@
 const constants = {
-  TIMER_GAP: 60000,
+  TIMER_GAP: 10000,
   DIGIT_NUMBER: 2,
   REVOLUT: 'Revolut',
   AVAILABLE_ACCOUNTS: 'Available Accounts',
