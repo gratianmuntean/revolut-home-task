@@ -52,7 +52,9 @@ const Input = (props: InputProps) => {
             <img src={flag} alt={currency} />
             <span>{currency}</span>
           </div>
-          <div className={styles.balance}>{balanceValue}</div>
+          <div className={styles.balance}>
+            <span id={`${currency}-balance`}>{balanceValue}</span>
+          </div>
         </label>
         <input
           type="number"

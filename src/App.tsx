@@ -16,7 +16,6 @@ import "./scss/app.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
-  console.log("constants", constants);
   const [rates, setRates] = useState([]);
   const [accounts, setAccounts] = useState(accountsData);
 

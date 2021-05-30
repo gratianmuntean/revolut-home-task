@@ -60,7 +60,6 @@ export const getLeftValues = (accounts: any, from: any, to: any, amount: number,
   const cloneFromAccount = { ...fromAccount };
   const cloneToAccount = { ...toAccount };
 
-
   if (operation === constants.SELL) {
     if (whichInput === constants.FIRST) {
       sellFormula(cloneFromAccount, cloneToAccount, amount, convertedAmount);
