@@ -50,13 +50,48 @@
   margin-bottom: 30px;
 }
 
+.arrow {
+  display: none;
+}
+
+.mobileArrow {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: 30px !important;
+}
+
+.arrow img {
+  height: 30px;
+  width: 40px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.mobileArrow img {
+  height: 25px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
 @media (min-width: 769px) {
   .selectBox {
     flex-direction: row;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
+  .mobileArrow {
+    display: none;
+  }
+
+  .arrow {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 15px;
+  }
+
   .selectBox span {
     font-size: 24px;
   }

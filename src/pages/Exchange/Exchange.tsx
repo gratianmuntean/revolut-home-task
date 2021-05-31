@@ -11,6 +11,8 @@ import { AppContext } from "contexts/AppContext";
 import { convertAmount, buildAccounts, getLeftValues } from "helpers";
 import constants from "config/constants";
 
+import { arrows } from "./arrowData";
+
 import styles from "./styles.module.css";
 
 type ExchangeProps = {
@@ -161,7 +163,7 @@ const Exchange = (props: ExchangeProps) => {
               )}
             </div>
             {/* number inputs */}
-            <div className="col-12 col-lg-8 col-xl-6">
+            <div className="col-12 col-lg-8 col-xl-5">
               <Input
                 currency={firstCurrency.currency}
                 balance={firstCurrency.amount}
@@ -174,7 +176,29 @@ const Exchange = (props: ExchangeProps) => {
                 handleDisableSubmit={handleDisableSubmit}
               />
             </div>
-            <div className="col-12 col-lg-8 col-xl-6">
+            {/* web arrow */}
+            <div className={`col-12 col-lg-8 col-xl-2 ${styles.arrow}`}>
+              <img
+                src={
+                  operation === constants.SELL
+                    ? arrows.rightArrow
+                    : arrows.leftArrow
+                }
+                alt="webArrow"
+              />
+            </div>
+            {/* mobile arrow */}
+            <div className={`col-12 col-lg-8 col-xl-2 ${styles.mobileArrow}`}>
+              <img
+                src={
+                  operation === constants.SELL
+                    ? arrows.bottomArrow
+                    : arrows.topArrow
+                }
+                alt="mobileArrow"
+              />
+            </div>
+            <div className="col-12 col-lg-8 col-xl-5">
               <Input
                 currency={secondCurrency.currency}
                 balance={secondCurrency.amount}
